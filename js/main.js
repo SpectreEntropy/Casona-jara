@@ -64,11 +64,15 @@ const avisoPromocion = document.querySelector("#avisoPromocion");
 
 if (botonPromocion && avisoPromocion) {
 
-    botonPromocion.addEventListener("click", () => {
+botonPromocion.addEventListener("click", () => {
 
-        avisoPromocion.style.display = "block";
+    avisoPromocion.style.display = "block";
 
-    });
+    // Registrar clic en promoción en GA4
+    if (typeof gtag === "function") {
+        gtag("event", "click_promocion", {
+            promotion_name: "descuento_agosto"
+        });
 
 }
 
@@ -217,9 +221,16 @@ Quedo atento a su confirmación.`;
 
         const url = "https://wa.me/" + numeroHotel + "?text=" + encodeURIComponent(mensaje);
 
-        window.open(url, "_blank");
+// Registrar solicitud de reserva en GA4
+if (typeof gtag === "function") {
+    gtag("event", "reservation_request", {
+        method: "whatsapp"
+    });
+}
 
-        form.reset();
+window.open(url, "_blank");
+
+form.reset();
     });
 }
 
